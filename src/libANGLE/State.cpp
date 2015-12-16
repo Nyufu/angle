@@ -16,6 +16,8 @@
 #include "libANGLE/VertexArray.h"
 #include "libANGLE/formatutils.h"
 
+#include "libANGLE/renderer/gl/functionsgl_enums.h"
+
 namespace gl
 {
 
@@ -92,6 +94,8 @@ void State::initialize(const Caps &caps, GLuint clientVersion)
     mRasterizer.cullFace = false;
     mRasterizer.cullMode = GL_BACK;
     mRasterizer.frontFace = GL_CCW;
+    mRasterizer.fillMode = GL_FILL;
+    mRasterizer.fillCullMode = GL_FRONT_AND_BACK;
     mRasterizer.polygonOffsetFill = false;
     mRasterizer.polygonOffsetFactor = 0.0f;
     mRasterizer.polygonOffsetUnits = 0.0f;
@@ -319,6 +323,18 @@ void State::setFrontFace(GLenum front)
 {
     mRasterizer.frontFace = front;
     mDirtyBits.set(DIRTY_BIT_FRONT_FACE);
+}
+
+void State::setFillMode(GLenum face, GLenum mode)
+{
+	mRasterizer.fillCullMode = face;
+	mRasterizer.fillMode = mode;
+	mDirtyBits.set(DIRTY_BIT_FILL);
+}
+
+GLuint State::getFillMode() const
+{
+	return mRasterizer.fillMode;
 }
 
 bool State::isDepthTestEnabled() const

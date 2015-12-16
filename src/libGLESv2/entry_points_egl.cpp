@@ -1307,6 +1307,9 @@ __eglMustCastToProperFunctionPointerType EGLAPIENTRY GetProcAddress(const char *
         // GL_ANGLE_translated_shader_source
         INSERT_PROC_ADDRESS(gl, GetTranslatedShaderSourceANGLE);
 
+		// GL_ANGLE_polygon_mode_line_fill
+		INSERT_PROC_ADDRESS(gl, PolygonModeANGLE);
+
         // GL_EXT_texture_storage
         INSERT_PROC_ADDRESS(gl, TexStorage2DEXT);
 

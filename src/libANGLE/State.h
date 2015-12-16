@@ -72,6 +72,10 @@ class State : angle::NonCopyable
     void setCullMode(GLenum mode);
     void setFrontFace(GLenum front);
 
+	// Fill mode manipulation
+	void setFillMode(GLenum face, GLenum mode);
+	GLuint getFillMode() const;
+
     // Depth test state manipulation
     bool isDepthTestEnabled() const;
     void setDepthTest(bool enabled);
@@ -294,6 +298,7 @@ class State : angle::NonCopyable
         DIRTY_BIT_CULL_FACE_ENABLED,
         DIRTY_BIT_CULL_FACE,
         DIRTY_BIT_FRONT_FACE,
+        DIRTY_BIT_FILL,
         DIRTY_BIT_POLYGON_OFFSET_FILL_ENABLED,
         DIRTY_BIT_POLYGON_OFFSET,
         DIRTY_BIT_RASTERIZER_DISCARD_ENABLED,

@@ -394,6 +394,16 @@ void GL_APIENTRY GetTranslatedShaderSourceANGLE(GLuint shader, GLsizei bufsize, 
     }
 }
 
+void GL_APIENTRY PolygonModeANGLE(GLenum face, GLenum mode)
+{
+	auto context = GetValidGlobalContext();
+	if ( context )
+	{
+		auto& state = context->getState();
+		state.setFillMode(face, mode);
+	}
+}
+
 void GL_APIENTRY GetnUniformfvEXT(GLuint program, GLint location, GLsizei bufSize, GLfloat* params)
 {
     EVENT("(GLuint program = %d, GLint location = %d, GLsizei bufSize = %d, GLfloat* params = 0x%0.8p)",

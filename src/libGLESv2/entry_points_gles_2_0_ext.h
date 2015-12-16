@@ -37,6 +37,9 @@ ANGLE_EXPORT void GL_APIENTRY SetFenceNV(GLuint fence, GLenum condition);
 // GL_ANGLE_translated_shader_source
 ANGLE_EXPORT void GL_APIENTRY GetTranslatedShaderSourceANGLE(GLuint shader, GLsizei bufsize, GLsizei *length, GLchar *source);
 
+// GL_ANGLE_polygon_mode_line_fill
+ANGLE_EXPORT void GL_APIENTRY PolygonModeANGLE(GLenum face, GLenum mode);
+
 // GL_EXT_texture_storage
 ANGLE_EXPORT void GL_APIENTRY TexStorage2DEXT(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
 

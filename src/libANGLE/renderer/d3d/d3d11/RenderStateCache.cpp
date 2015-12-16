@@ -8,6 +8,7 @@
 // state objects.
 
 #include "libANGLE/renderer/d3d/d3d11/RenderStateCache.h"
+#include "libANGLE/renderer/gl/functionsgl_enums.h"
 
 #include <float.h>
 
@@ -249,8 +250,15 @@ gl::Error RenderStateCache::getRasterizerState(const gl::RasterizerState &raster
             cullMode = D3D11_CULL_NONE;
         }
 
+		auto fillMode = rasterState.fillMode == GL_FILL ? D3D11_FILL_SOLID : D3D11_FILL_WIREFRAME;
+
+		if ( cullMode == gl_d3d11::ConvertCullMode(rasterState.cullFace, rasterState.fillCullMode) )
+		{
+			fillMode = D3D11_FILL_SOLID;
+		}
+
         D3D11_RASTERIZER_DESC rasterDesc;
-        rasterDesc.FillMode = D3D11_FILL_SOLID;
+        rasterDesc.FillMode = fillMode;
         rasterDesc.CullMode = cullMode;
         rasterDesc.FrontCounterClockwise = (rasterState.frontFace == GL_CCW) ? FALSE: TRUE;
         rasterDesc.DepthBiasClamp = 0.0f; // MSDN documentation of DepthBiasClamp implies a value of zero will preform no clamping, must be tested though.

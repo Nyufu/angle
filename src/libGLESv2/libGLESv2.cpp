@@ -1460,6 +1460,11 @@ GLboolean GL_APIENTRY glIsVertexArrayOES(GLuint array)
     return gl::IsVertexArrayOES(array);
 }
 
+void  GL_APIENTRY glPolygonModeANGLE(GLenum face, GLenum mode)
+{
+	return gl::PolygonModeANGLE(face, mode);
+}
+
 void GL_APIENTRY glDebugMessageControlKHR(GLenum source,
                                           GLenum type,
                                           GLenum severity,

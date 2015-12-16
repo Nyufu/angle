@@ -226,6 +226,9 @@ struct Extensions
     // GL_ANGLE_translated_shader_source
     bool translatedShaderSource;
 
+    // GL_ANGLE_polygon_mode_line_fill
+    bool polygon_mode_line_fill;
+
     // GL_OES_fbo_render_mipmap
     bool fboRenderMipmap;
 
