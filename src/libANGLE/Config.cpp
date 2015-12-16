@@ -144,6 +144,7 @@ class ConfigSorter
             return xComponentsSize > yComponentsSize;
         }
 
+		SORT(renderTargetFormat);
         SORT(bufferSize);
         SORT(sampleBuffers);
         SORT(samples);
