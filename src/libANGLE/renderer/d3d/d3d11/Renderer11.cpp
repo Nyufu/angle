@@ -1083,6 +1083,8 @@ void Renderer11::generateDisplayExtensions(egl::DisplayExtensions *outExtensions
     outExtensions->glTexture2DImage      = true;
     outExtensions->glTextureCubemapImage = true;
     outExtensions->glRenderbufferImage   = true;
+
+    outExtensions->flexibleSurfaceCompatibility = true;
 }
 
 gl::Error Renderer11::flush()
@@ -2608,11 +2610,6 @@ bool Renderer11::resetDevice()
     mDeviceLost = false;
 
     return true;
-}
-
-VendorID Renderer11::getVendorId() const
-{
-    return static_cast<VendorID>(mAdapterDescription.VendorId);
 }
 
 std::string Renderer11::getRendererDescription() const
