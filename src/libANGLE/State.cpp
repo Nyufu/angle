@@ -10,6 +10,7 @@
 
 #include "libANGLE/Context.h"
 #include "libANGLE/Caps.h"
+#include "libANGLE/Debug.h"
 #include "libANGLE/Framebuffer.h"
 #include "libANGLE/FramebufferAttachment.h"
 #include "libANGLE/Query.h"
@@ -80,7 +81,10 @@ State::~State()
     reset();
 }
 
-void State::initialize(const Caps &caps, GLuint clientVersion)
+void State::initialize(const Caps &caps,
+                       const Extensions &extensions,
+                       GLuint clientVersion,
+                       bool debug)
 {
     mMaxDrawBuffers = caps.maxDrawBuffers;
     mMaxCombinedTextureImageUnits = caps.maxCombinedTextureImageUnits;
@@ -189,6 +193,9 @@ void State::initialize(const Caps &caps, GLuint clientVersion)
     mDrawFramebuffer = NULL;
 
     mPrimitiveRestart = false;
+
+    mDebug.setOutputEnabled(debug);
+    mDebug.setMaxLoggedMessages(extensions.maxDebugLoggedMessages);
 }
 
 void State::reset()
@@ -597,6 +604,12 @@ void State::setEnableFeature(GLenum feature, bool enabled)
       case GL_DITHER:                        setDither(enabled);                break;
       case GL_PRIMITIVE_RESTART_FIXED_INDEX: setPrimitiveRestart(enabled);      break;
       case GL_RASTERIZER_DISCARD:            setRasterizerDiscard(enabled);     break;
+      case GL_DEBUG_OUTPUT_SYNCHRONOUS:
+          mDebug.setOutputSynchronous(enabled);
+          break;
+      case GL_DEBUG_OUTPUT:
+          mDebug.setOutputEnabled(enabled);
+          break;
       default:                               UNREACHABLE();
     }
 }
@@ -616,6 +629,10 @@ bool State::getEnableFeature(GLenum feature)
       case GL_DITHER:                        return isDitherEnabled();
       case GL_PRIMITIVE_RESTART_FIXED_INDEX: return isPrimitiveRestartEnabled();
       case GL_RASTERIZER_DISCARD:            return isRasterizerDiscardEnabled();
+      case GL_DEBUG_OUTPUT_SYNCHRONOUS:
+          return mDebug.isOutputSynchronous();
+      case GL_DEBUG_OUTPUT:
+          return mDebug.isOutputEnabled();
       default:                               UNREACHABLE(); return false;
     }
 }
@@ -1287,6 +1304,16 @@ PixelUnpackState &State::getUnpackState()
     return mUnpack;
 }
 
+const Debug &State::getDebug() const
+{
+    return mDebug;
+}
+
+Debug &State::getDebug()
+{
+    return mDebug;
+}
+
 void State::getBooleanv(GLenum pname, GLboolean *params)
 {
     switch (pname)
@@ -1315,6 +1342,12 @@ void State::getBooleanv(GLenum pname, GLboolean *params)
           break;
       case GL_RASTERIZER_DISCARD:
           *params = isRasterizerDiscardEnabled() ? GL_TRUE : GL_FALSE;
+          break;
+      case GL_DEBUG_OUTPUT_SYNCHRONOUS:
+          *params = mDebug.isOutputSynchronous() ? GL_TRUE : GL_FALSE;
+          break;
+      case GL_DEBUG_OUTPUT:
+          *params = mDebug.isOutputEnabled() ? GL_TRUE : GL_FALSE;
           break;
       default:
         UNREACHABLE();
@@ -1573,9 +1606,34 @@ void State::getIntegerv(const gl::Data &data, GLenum pname, GLint *params)
       case GL_PIXEL_UNPACK_BUFFER_BINDING:
         *params = mUnpack.pixelBuffer.id();
         break;
+      case GL_DEBUG_LOGGED_MESSAGES:
+          *params = static_cast<GLint>(mDebug.getMessageCount());
+          break;
+      case GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH:
+          *params = static_cast<GLint>(mDebug.getNextMessageLength());
+          break;
+      case GL_DEBUG_GROUP_STACK_DEPTH:
+          *params = static_cast<GLint>(mDebug.getGroupStackDepth());
+          break;
       default:
         UNREACHABLE();
         break;
+    }
+}
+
+void State::getPointerv(GLenum pname, void **params) const
+{
+    switch (pname)
+    {
+        case GL_DEBUG_CALLBACK_FUNCTION:
+            *params = reinterpret_cast<void *>(mDebug.getCallback());
+            break;
+        case GL_DEBUG_CALLBACK_USER_PARAM:
+            *params = const_cast<void *>(mDebug.getUserParam());
+            break;
+        default:
+            UNREACHABLE();
+            break;
     }
 }
 
