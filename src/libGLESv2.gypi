@@ -68,6 +68,8 @@
             'libANGLE/Context.h',
             'libANGLE/Data.cpp',
             'libANGLE/Data.h',
+            'libANGLE/Debug.cpp',
+            'libANGLE/Debug.h',
             'libANGLE/Device.cpp',
             'libANGLE/Device.h',
             'libANGLE/Display.cpp',
@@ -735,10 +737,10 @@
                             ],
                             'link_settings': {
                                 'ldflags': [
-                                    '<!@(pkg-config --libs-only-L --libs-only-other x11 xi)',
+                                    '<!@(<(pkg-config) --libs-only-L --libs-only-other x11 xi)',
                                 ],
                                 'libraries': [
-                                    '<!@(pkg-config --libs-only-l x11 xi) -ldl',
+                                    '<!@(<(pkg-config) --libs-only-l x11 xi) -ldl',
                                 ],
                             },
                         }],

@@ -29,7 +29,7 @@ struct PointSpritesParams final : public RenderTestParams
         minorVersion = 0;
         windowWidth = 1280;
         windowHeight = 720;
-        iterations = 10;
+        iterations   = 100;
         count = 10;
         size = 3.0f;
         numVaryings = 3;
@@ -59,7 +59,6 @@ class PointSpritesBenchmark : public ANGLERenderTest,
 
     void initializeBenchmark() override;
     void destroyBenchmark() override;
-    void beginDrawBenchmark() override;
     void drawBenchmark() override;
 
   private:
@@ -87,8 +86,7 @@ void PointSpritesBenchmark::initializeBenchmark()
 {
     const auto &params = GetParam();
 
-    mDrawIterations = params.iterations;
-    ASSERT_TRUE(params.iterations > 0);
+    ASSERT_LT(0u, params.iterations);
 
     std::stringstream vstrstr;
 
@@ -144,7 +142,7 @@ void PointSpritesBenchmark::initializeBenchmark()
                "}\n";
 
     mProgram = CompileProgram(vstrstr.str(), fstrstr.str());
-    ASSERT_TRUE(mProgram != 0);
+    ASSERT_NE(0u, mProgram);
 
     // Use the program object
     glUseProgram(mProgram);
@@ -161,17 +159,17 @@ void PointSpritesBenchmark::initializeBenchmark()
     glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
     glBufferData(GL_ARRAY_BUFFER, vertexPositions.size() * sizeof(float), &vertexPositions[0], GL_STATIC_DRAW);
 
-    int positionLocation = glGetAttribLocation(mProgram, "vPosition");
-    ASSERT_TRUE(positionLocation != -1);
+    GLint positionLocation = glGetAttribLocation(mProgram, "vPosition");
+    ASSERT_NE(-1, positionLocation);
 
-    glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(positionLocation);
 
     // Set the viewport
     glViewport(0, 0, getWindow()->getWidth(), getWindow()->getHeight());
 
-    int pointSizeLocation = glGetUniformLocation(mProgram, "uPointSize");
-    ASSERT_TRUE(pointSizeLocation != -1);
+    GLint pointSizeLocation = glGetUniformLocation(mProgram, "uPointSize");
+    ASSERT_NE(-1, pointSizeLocation);
 
     glUniform1f(pointSizeLocation, params.size);
 
@@ -184,14 +182,10 @@ void PointSpritesBenchmark::destroyBenchmark()
     glDeleteBuffers(1, &mBuffer);
 }
 
-void PointSpritesBenchmark::beginDrawBenchmark()
-{
-    // Clear the color buffer
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
 void PointSpritesBenchmark::drawBenchmark()
 {
+    glClear(GL_COLOR_BUFFER_BIT);
+
     const auto &params = GetParam();
 
     for (unsigned int it = 0; it < params.iterations; it++)
