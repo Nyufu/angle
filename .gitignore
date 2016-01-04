@@ -13,6 +13,7 @@ Release_ARM/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*.VC.db
 *.VC.opendb
 patches-*
 *.target.mk

@@ -136,7 +136,7 @@ bool UniformInList(const std::vector<LinkedUniform> &list, const std::string &na
 
 }  // anonymous namespace
 
-const char *const g_fakepath = "C:\\fakepath";
+const char *const g_fakepath = "C:\\fakepath.hlsl";
 
 AttributeBindings::AttributeBindings()
 {

@@ -3258,7 +3258,7 @@ gl::Error Renderer11::compileToExecutable(gl::InfoLog &infoLog,
 
     UINT flags = D3DCOMPILE_OPTIMIZATION_LEVEL2;
 
-    if (gl::DebugAnnotationsActive())
+    if (true) //TODO: Create an extension for switch this.
     {
 #ifndef NDEBUG
         flags = D3DCOMPILE_SKIP_OPTIMIZATION;
