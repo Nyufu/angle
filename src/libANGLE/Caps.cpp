@@ -153,6 +153,7 @@ Extensions::Extensions()
       maxDebugLoggedMessages(0),
       maxDebugGroupStackDepth(0),
       maxLabelLength(0),
+      noError(false),
       colorBufferFloat(false)
 {
 }
@@ -220,6 +221,8 @@ std::vector<std::string> Extensions::getStrings() const
     InsertExtensionString("GL_EXT_color_buffer_float",           colorBufferFloat,          &extensionStrings);
     InsertExtensionString("GL_OES_vertex_array_object",          vertexArrayObject,         &extensionStrings);
     InsertExtensionString("GL_KHR_debug",                        debug,                     &extensionStrings);
+    // TODO(jmadill): Enable this when complete.
+    //InsertExtensionString("GL_KHR_no_error",                     noError,                   &extensionStrings);
     // clang-format on
 
     return extensionStrings;
@@ -611,6 +614,7 @@ DisplayExtensions::DisplayExtensions()
       querySurfacePointer(false),
       windowFixedSize(false),
       keyedMutex(false),
+      surfaceOrientation(false),
       postSubBuffer(false),
       createContext(false),
       deviceQuery(false),
@@ -622,7 +626,9 @@ DisplayExtensions::DisplayExtensions()
       glTexture3DImage(false),
       glRenderbufferImage(false),
       getAllProcAddresses(false),
-      flexibleSurfaceCompatibility(false)
+      flexibleSurfaceCompatibility(false),
+      directComposition(false),
+      createContextNoError(false)
 {
 }
 
@@ -638,6 +644,8 @@ std::vector<std::string> DisplayExtensions::getStrings() const
     InsertExtensionString("EGL_ANGLE_query_surface_pointer",               querySurfacePointer,            &extensionStrings);
     InsertExtensionString("EGL_ANGLE_window_fixed_size",                   windowFixedSize,                &extensionStrings);
     InsertExtensionString("EGL_ANGLE_keyed_mutex",                         keyedMutex,                     &extensionStrings);
+    InsertExtensionString("EGL_ANGLE_surface_orientation",                 surfaceOrientation,             &extensionStrings);
+    InsertExtensionString("EGL_ANGLE_direct_composition",                  directComposition,              &extensionStrings);
     InsertExtensionString("EGL_NV_post_sub_buffer",                        postSubBuffer,                  &extensionStrings);
     InsertExtensionString("EGL_KHR_create_context",                        createContext,                  &extensionStrings);
     InsertExtensionString("EGL_EXT_device_query",                          deviceQuery,                    &extensionStrings);
@@ -649,7 +657,9 @@ std::vector<std::string> DisplayExtensions::getStrings() const
     InsertExtensionString("EGL_KHR_gl_texture_3D_image",                   glTexture3DImage,               &extensionStrings);
     InsertExtensionString("EGL_KHR_gl_renderbuffer_image",                 glRenderbufferImage,            &extensionStrings);
     InsertExtensionString("EGL_KHR_get_all_proc_addresses",                getAllProcAddresses,            &extensionStrings);
-    InsertExtensionString("EGL_ANGLE_flexible_surface_compatibilty",       flexibleSurfaceCompatibility,   &extensionStrings);
+    InsertExtensionString("EGL_ANGLE_flexible_surface_compatibility",      flexibleSurfaceCompatibility,   &extensionStrings);
+    // TODO(jmadill): Enable this when complete.
+    //InsertExtensionString("KHR_create_context_no_error",                   createContextNoError,           &extensionStrings);
     // clang-format on
 
     return extensionStrings;

@@ -194,7 +194,7 @@ Display *Display::GetDisplayFromAttribs(void *native_display, const AttributeMap
 
     Display *display = nullptr;
 
-    EGLNativeDisplayType displayId = static_cast<EGLNativeDisplayType>(native_display);
+    EGLNativeDisplayType displayId = reinterpret_cast<EGLNativeDisplayType>(native_display);
 
     ANGLEPlatformDisplayMap *displays            = GetANGLEPlatformDisplayMap();
     ANGLEPlatformDisplayMap::const_iterator iter = displays->find(displayId);
@@ -483,6 +483,15 @@ bool Display::getConfigAttrib(const Config *configuration, EGLint attribute, EGL
       case EGL_MAX_PBUFFER_WIDTH:         *value = configuration->maxPBufferWidth;        break;
       case EGL_MAX_PBUFFER_HEIGHT:        *value = configuration->maxPBufferHeight;       break;
       case EGL_MAX_PBUFFER_PIXELS:        *value = configuration->maxPBufferPixels;       break;
+
+      case EGL_OPTIMAL_SURFACE_ORIENTATION_ANGLE:
+          if (!getExtensions().surfaceOrientation)
+          {
+              return false;
+          }
+          *value = configuration->optimalOrientation;
+          break;
+
       default:
         return false;
     }
@@ -686,12 +695,8 @@ Error Display::createContext(const Config *configuration, gl::Context *shareCont
         }
     }
 
-    gl::Context *context = nullptr;
-    Error error = mImplementation->createContext(configuration, shareContext, attribs, &context);
-    if (error.isError())
-    {
-        return error;
-    }
+    gl::Context *context = *outContext =
+        mImplementation->createContext(configuration, shareContext, attribs);
 
     ASSERT(context != nullptr);
     mContextSet.insert(context);
@@ -789,6 +794,16 @@ void Display::notifyDeviceLost()
     {
         (*context)->markContextLost();
     }
+}
+
+Error Display::waitClient() const
+{
+    return mImplementation->waitClient();
+}
+
+Error Display::waitNative(EGLint engine) const
+{
+    return mImplementation->waitNative(engine);
 }
 
 const Caps &Display::getCaps() const

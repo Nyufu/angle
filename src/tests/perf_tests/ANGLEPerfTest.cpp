@@ -3,20 +3,24 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 //
+// ANGLEPerfTests:
+//   Base class for google test performance tests
+//
 
 #include "ANGLEPerfTest.h"
 
 #include "third_party/perf/perf_test.h"
 
-#include <iostream>
 #include <cassert>
+#include <cmath>
+#include <iostream>
 
 ANGLEPerfTest::ANGLEPerfTest(const std::string &name, const std::string &suffix)
     : mName(name),
       mSuffix(suffix),
       mTimer(nullptr),
-      mNumStepsPerformed(0),
       mRunTimeSeconds(5.0),
+      mNumStepsPerformed(0),
       mRunning(true)
 {
     mTimer = CreateTimer();

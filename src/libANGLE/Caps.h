@@ -270,6 +270,9 @@ struct Extensions
     GLuint maxDebugGroupStackDepth;
     GLuint maxLabelLength;
 
+    // KHR_no_error
+    bool noError;
+
     // ES3 Extension support
 
     // GL_EXT_color_buffer_float
@@ -430,6 +433,9 @@ struct DisplayExtensions
     // EGL_ANGLE_keyed_mutex
     bool keyedMutex;
 
+    // EGL_ANGLE_surface_orientation
+    bool surfaceOrientation;
+
     // EGL_NV_post_sub_buffer
     bool postSubBuffer;
 
@@ -465,6 +471,12 @@ struct DisplayExtensions
 
     // EGL_ANGLE_flexible_surface_compatibility
     bool flexibleSurfaceCompatibility;
+
+    // EGL_ANGLE_direct_composition
+    bool directComposition;
+
+    // KHR_create_context_no_error
+    bool createContextNoError;
 };
 
 struct DeviceExtensions

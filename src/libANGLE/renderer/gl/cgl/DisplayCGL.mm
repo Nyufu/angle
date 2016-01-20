@@ -6,15 +6,15 @@
 
 // DisplayCGL.mm: CGL implementation of egl::Display
 
-#include "libANGLE/renderer/gl/CGL/DisplayCGL.h"
+#include "libANGLE/renderer/gl/cgl/DisplayCGL.h"
 
 #import <Cocoa/Cocoa.h>
 #include <dlfcn.h>
 #include <EGL/eglext.h>
 
 #include "common/debug.h"
-#include "libANGLE/renderer/gl/CGL/PbufferSurfaceCGL.h"
-#include "libANGLE/renderer/gl/CGL/WindowSurfaceCGL.h"
+#include "libANGLE/renderer/gl/cgl/PbufferSurfaceCGL.h"
+#include "libANGLE/renderer/gl/cgl/WindowSurfaceCGL.h"
 
 namespace
 {
@@ -248,6 +248,7 @@ const FunctionsGL *DisplayCGL::getFunctionsGL() const
 void DisplayCGL::generateExtensions(egl::DisplayExtensions *outExtensions) const
 {
     outExtensions->createContext = true;
+    outExtensions->createContextNoError = true;
 }
 
 void DisplayCGL::generateCaps(egl::Caps *outCaps) const
@@ -255,4 +256,15 @@ void DisplayCGL::generateCaps(egl::Caps *outCaps) const
     outCaps->textureNPOT = true;
 }
 
+egl::Error DisplayCGL::waitClient() const
+{
+    // TODO(cwallez) UNIMPLEMENTED()
+    return egl::Error(EGL_SUCCESS);
+}
+
+egl::Error DisplayCGL::waitNative(EGLint engine) const
+{
+    // TODO(cwallez) UNIMPLEMENTED()
+    return egl::Error(EGL_SUCCESS);
+}
 }

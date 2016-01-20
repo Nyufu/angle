@@ -5,6 +5,8 @@
 {
     'variables':
     {
+        'angle_standalone%': 0,
+
         # These file lists are shared with the GN build.
         'libangle_common_sources':
         [
@@ -96,7 +98,6 @@
             'libANGLE/Program.h',
             'libANGLE/Query.cpp',
             'libANGLE/Query.h',
-            'libANGLE/RefCountObject.cpp',
             'libANGLE/RefCountObject.h',
             'libANGLE/Renderbuffer.cpp',
             'libANGLE/Renderbuffer.h',
@@ -821,5 +822,22 @@
                 }],
             ],
         },
+    ],
+    'conditions':
+    [
+        ['angle_standalone==0 and OS!="win"',
+        {
+            'targets':
+            [
+                {
+                    'target_name': 'libGLESv2_ANGLE',
+                    'type': 'loadable_module',
+                    'dependencies':
+                    [
+                        'libGLESv2',
+                    ],
+                },
+            ],
+        }],
     ],
 }

@@ -639,6 +639,18 @@ std::string DisplayGLX::getVendorString() const
     return "";
 }
 
+egl::Error DisplayGLX::waitClient() const
+{
+    mGLX.waitGL();
+    return egl::Error(EGL_SUCCESS);
+}
+
+egl::Error DisplayGLX::waitNative(EGLint engine) const
+{
+    mGLX.waitX();
+    return egl::Error(EGL_SUCCESS);
+}
+
 void DisplayGLX::syncXCommands() const
 {
     if (mUsesNewXDisplay)
@@ -690,9 +702,9 @@ void DisplayGLX::setSwapInterval(glx::Drawable drawable, SwapControlData *data)
     }
 }
 
-bool DisplayGLX::isValidWindowVisualId(int visualId) const
+bool DisplayGLX::isValidWindowVisualId(unsigned long visualId) const
 {
-    return mRequestedVisual == -1 || mRequestedVisual == visualId;
+    return mRequestedVisual == -1 || static_cast<unsigned long>(mRequestedVisual) == visualId;
 }
 
 const FunctionsGL *DisplayGLX::getFunctionsGL() const
@@ -703,6 +715,7 @@ const FunctionsGL *DisplayGLX::getFunctionsGL() const
 void DisplayGLX::generateExtensions(egl::DisplayExtensions *outExtensions) const
 {
     outExtensions->createContext = true;
+    outExtensions->createContextNoError = true;
 }
 
 void DisplayGLX::generateCaps(egl::Caps *outCaps) const

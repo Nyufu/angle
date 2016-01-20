@@ -67,6 +67,9 @@ class DisplayGLX : public DisplayGL
 
     std::string getVendorString() const override;
 
+    egl::Error waitClient() const override;
+    egl::Error waitNative(EGLint engine) const override;
+
     // Synchronizes with the X server, if the display has been opened by ANGLE.
     // Calling this is required at the end of every functions that does buffered
     // X calls (not for glX calls) otherwise there might be race conditions
@@ -79,7 +82,7 @@ class DisplayGLX : public DisplayGL
     // acts as expected.
     void setSwapInterval(glx::Drawable drawable, SwapControlData *data);
 
-    bool isValidWindowVisualId(int visualId) const;
+    bool isValidWindowVisualId(unsigned long visualId) const;
 
   private:
     const FunctionsGL *getFunctionsGL() const override;

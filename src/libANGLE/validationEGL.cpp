@@ -248,6 +248,17 @@ Error ValidateCreateContext(Display *display, Config *configuration, gl::Context
             }
             break;
 
+          case EGL_CONTEXT_OPENGL_NO_ERROR_KHR:
+              if (!display->getExtensions().createContextNoError)
+              {
+                  return Error(EGL_BAD_ATTRIBUTE, "Invalid Context attribute.");
+              }
+              if (value != EGL_TRUE && value != EGL_FALSE)
+              {
+                  return Error(EGL_BAD_ATTRIBUTE, "Attribute must be EGL_TRUE or EGL_FALSE.");
+              }
+              break;
+
           default:
             return Error(EGL_BAD_ATTRIBUTE);
         }
@@ -372,11 +383,25 @@ Error ValidateCreateWindowSurface(Display *display, Config *config, EGLNativeWin
             }
             break;
 
+          case EGL_SURFACE_ORIENTATION_ANGLE:
+              if (!displayExtensions.surfaceOrientation)
+              {
+                  return Error(EGL_BAD_ATTRIBUTE, "EGL_ANGLE_surface_orientation is not enabled.");
+              }
+              break;
+
           case EGL_VG_COLORSPACE:
             return Error(EGL_BAD_MATCH);
 
           case EGL_VG_ALPHA_FORMAT:
             return Error(EGL_BAD_MATCH);
+
+          case EGL_DIRECT_COMPOSITION_ANGLE:
+              if (!displayExtensions.directComposition)
+              {
+                  return Error(EGL_BAD_ATTRIBUTE);
+              }
+              break;
 
           default:
             return Error(EGL_BAD_ATTRIBUTE);
